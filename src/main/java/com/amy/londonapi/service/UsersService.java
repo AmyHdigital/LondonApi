@@ -2,6 +2,7 @@ package com.amy.londonapi.service;
 
 import com.amy.londonapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,20 @@ import java.util.List;
 public class UsersService {
 
     private final RestTemplate restTemplate;
+    private final String backendUrl;
 
     @Autowired
-    public UsersService(RestTemplate restTemplate) {
+    public UsersService(RestTemplate restTemplate, @Value("backend_service_url") String backendUrl) {
         this.restTemplate = restTemplate;
+        this.backendUrl = backendUrl;
     }
 
     public List<User> getAllUsers(){
 
         List<User> users = new ArrayList<>();
 
-        ResponseEntity<User[]> allUsers = restTemplate.getForEntity("",User[].class);
+        String url = backendUrl + "users";
+        ResponseEntity<User[]> allUsers = restTemplate.getForEntity(url,User[].class);
         users = Arrays.asList(allUsers.getBody());
 
         return users;

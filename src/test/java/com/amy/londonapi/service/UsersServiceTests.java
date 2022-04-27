@@ -43,10 +43,12 @@ public class UsersServiceTests {
         // Create mocked response from the Users API call
         ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(expectedUsersArray,HttpStatus.OK);
 
-        // Mock out the rest template call
-        when(mockedRestTemplate.getForEntity("",User[].class)).thenReturn(allUsersResponse);
+        String url = "http://bpdts-test-app.herokuapp.com/";
 
-        UsersService usersService = new UsersService(mockedRestTemplate);
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users",User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
 
         List<User> actualResponse = usersService.getAllUsers();
 
