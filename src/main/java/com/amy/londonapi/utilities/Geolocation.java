@@ -36,10 +36,6 @@ public class Geolocation {
         return distanceFromStartPoint <= milesInMetres;
     }
 
-    private static double metresToMiles(double metres) {
-        return metres / METRES_IN_MILE;
-    }
-
     private static double milesToMetres(double miles) {
         return miles * METRES_IN_MILE;
     }

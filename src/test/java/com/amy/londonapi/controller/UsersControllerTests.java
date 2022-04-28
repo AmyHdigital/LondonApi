@@ -29,13 +29,13 @@ public class UsersControllerTests {
     }
 
     @Test
-    public void controllerReturns200WithEmptyListOfUsers(){
+    public void controllerReturns200WithEmptyListOfUsers() {
         when(mockedUsersService.getUsersInCityOrAroundLocation(
                 anyString(),
                 anyDouble(),
                 anyDouble(),
                 anyDouble()
-                )).thenReturn(new ArrayList<>());
+        )).thenReturn(new ArrayList<>());
 
         ResponseEntity<List<User>> actualResponse = usersController.getUsersInOrAroundLondon();
 

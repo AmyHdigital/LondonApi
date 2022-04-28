@@ -20,11 +20,11 @@ public class GeolocationTests {
     @Test
     public void isUserWithin50MilesOfLondon() {
 
-        double userLatitude =  51.6553959;
+        double userLatitude = 51.6553959;
         double userLongitude = 0.0572553;
 
         boolean result = Geolocation.isUserWithinXMilesOfCoordinates(
-            userLatitude,
+                userLatitude,
                 userLongitude,
                 50,
                 LONDON_LATITUDE,
@@ -36,7 +36,7 @@ public class GeolocationTests {
     @Test
     public void isUserOutside50MilesOfLondon() {
 
-        double userLatitude =  34.003135;
+        double userLatitude = 34.003135;
         double userLongitude = -117.7228641;
 
         boolean result = Geolocation.isUserWithinXMilesOfCoordinates(
@@ -52,7 +52,7 @@ public class GeolocationTests {
     @Test
     public void isUserExactly50MilesOfLondon() {
 
-        double userLatitude =  52.09427;
+        double userLatitude = 52.09427;
         double userLongitude = 0.420771;
 
         boolean result = Geolocation.isUserWithinXMilesOfCoordinates(

@@ -29,29 +29,22 @@ public class UsersService {
 
     public List<User> getAllUsers() {
 
-        List<User> users = new ArrayList<>();
-
         String url = backendUrl + "users";
         ResponseEntity<User[]> allUsers = restTemplate.getForEntity(url, User[].class);
-        users = Arrays.asList(allUsers.getBody());
-
-        return users;
+        return Arrays.asList(allUsers.getBody());
     }
 
 
     public List<User> getAllUsersFromCity(String city) {
 
-        List<User> users = new ArrayList<>();
-
         String url = backendUrl + "city/" + city + "/users";
         ResponseEntity<User[]> allCityUsers = restTemplate.getForEntity(url, User[].class);
-        users = Arrays.asList(allCityUsers.getBody());
 
-        return users;
+        return Arrays.asList(allCityUsers.getBody());
     }
 
 
-    public List<User> getUsersWithinXMilesOfLocation (double miles, double startLatitude, double startLongitude){
+    public List<User> getUsersWithinXMilesOfLocation(double miles, double startLatitude, double startLongitude) {
 
         List<User> listOfUsers = getAllUsers();
 
@@ -65,11 +58,11 @@ public class UsersService {
                 .collect(Collectors.toList());
     }
 
-    public List<User> getUsersInCityOrAroundLocation(String city,double miles, double startLatitude, double startLongitude){
+    public List<User> getUsersInCityOrAroundLocation(String city, double miles, double startLatitude, double startLongitude) {
         List<User> listOfUsersInCity = getAllUsersFromCity(city);
-        List<User> listOfUsersAroundLocation = getUsersWithinXMilesOfLocation(miles,startLatitude,startLongitude);
+        List<User> listOfUsersAroundLocation = getUsersWithinXMilesOfLocation(miles, startLatitude, startLongitude);
 
-        return Stream.of(listOfUsersInCity,listOfUsersAroundLocation)
+        return Stream.of(listOfUsersInCity, listOfUsersAroundLocation)
                 .flatMap(Collection::stream)
                 .distinct()
                 .collect(Collectors.toList());

@@ -13,17 +13,7 @@ import java.util.List;
 @RestController
 public class UsersController {
 
-    /**
-     * Constant for the latitude of London.
-     */
-    final private double LONDON_LATITUDE = 51.507222;
-
-    /**
-     * Constant for the longitude of London.
-     */
-    final private double LONDON_LONGITUDE = -0.1275;
-
-    private UsersService usersService;
+    private final UsersService usersService;
 
     @Autowired
     public UsersController(UsersService usersService) {
@@ -34,14 +24,15 @@ public class UsersController {
     @GetMapping(value = "/v1/london-users", produces = {"application/json"})
     public ResponseEntity<List<User>> getUsersInOrAroundLondon() {
 
+        double LONDON_LONGITUDE = -0.1275;
+        double LONDON_LATITUDE = 51.507222;
+
         List<User> users = usersService.getUsersInCityOrAroundLocation(
                 "London",
                 50,
                 LONDON_LATITUDE,
                 LONDON_LONGITUDE);
 
-        ResponseEntity<List<User>> response = new ResponseEntity<>(users, HttpStatus.OK);
-
-        return response;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
