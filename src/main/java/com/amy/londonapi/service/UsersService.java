@@ -34,4 +34,16 @@ public class UsersService {
 
         return users;
     }
+
+
+    public List<User> getAllUsersFromCity(String city){
+
+        List<User> users = new ArrayList<>();
+
+        String url = backendUrl + "city/" + city + "/users";
+        ResponseEntity<User[]> allCityUsers = restTemplate.getForEntity(url,User[].class);
+        users = Arrays.asList(allCityUsers.getBody());
+
+        return users;
+    }
 }
