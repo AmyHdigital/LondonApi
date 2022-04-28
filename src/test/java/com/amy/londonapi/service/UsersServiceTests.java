@@ -17,6 +17,16 @@ import static org.mockito.Mockito.when;
 
 public class UsersServiceTests {
 
+    /**
+     * Constant for the latitude of London.
+     */
+    final private double LONDON_LATITUDE = 51.507222;
+
+    /**
+     * Constant for the longitude of London.
+     */
+    final private double LONDON_LONGITUDE = -0.1275;
+
     private RestTemplate mockedRestTemplate;
 
     @BeforeEach
@@ -94,5 +104,213 @@ public class UsersServiceTests {
 
         assertNotNull(actualResponse);
         assertNotEquals(0, actualResponse.size());
+    }
+
+    @Test
+    public void whenNoUsersThenGetUsersWithinXMilesOfLocationReturnsEmptyList() {
+        // Convert list to array for easier processing
+        User[] usersArray = new User[0];
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(usersArray, HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getUsersWithinXMilesOfLocation(
+                50,
+                LONDON_LATITUDE,
+                LONDON_LONGITUDE);
+
+        assertNotNull(actualResponse);
+        assertNotEquals(0, actualResponse.size());
+    }
+
+    @Test
+    public void whenOneUserWithin50MilesOfLocationThenGetUsersWithin50MilesOfLondonReturnsListWithOneUser() {
+        // Create sample user
+        User user1 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                51.6553959,
+                0.0572553);
+
+        // Add sample user to list
+        List<User> usersList = new ArrayList<>();
+        usersList.add(user1);
+
+        // Convert list to array for easier processing
+        User[] usersArray = new User[usersList.size()];
+        usersList.toArray(usersArray);
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(usersArray, HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getUsersWithinXMilesOfLocation(
+                50,
+                LONDON_LATITUDE,
+                LONDON_LONGITUDE);
+
+        assertNotNull(actualResponse);
+        assertNotEquals(1, actualResponse.size());
+
+    }
+
+    @Test
+    public void whenOneUserOutside50MilesOfLocationThenGetUsersWithin50MilesOfLondonReturnsEmptyList() {
+        // Create sample user
+        User user1 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                34.003135,
+                -117.7228641);
+
+        // Add sample user to list
+        List<User> usersList = new ArrayList<>();
+        usersList.add(user1);
+
+        // Convert list to array for easier processing
+        User[] usersArray = new User[usersList.size()];
+        usersList.toArray(usersArray);
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(usersArray, HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getUsersWithinXMilesOfLocation(
+                50,
+                LONDON_LATITUDE,
+                LONDON_LONGITUDE);
+
+        assertNotNull(actualResponse);
+        assertNotEquals(1, actualResponse.size());
+
+
+    }
+
+
+    @Test
+    public void whenTwoUsersWithin50MilesOfLocationThenGetUsersWithin50MilesOfLondonReturnsListWithTwoUsers() {
+        // Create sample user
+        User user1 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                51.6553959,
+                0.0572553);
+
+        User user2 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                51.507222,
+                -0.1275);
+
+        // Add sample user to list
+        List<User> usersList = new ArrayList<>();
+        usersList.add(user1);
+        usersList.add(user2);
+
+        // Convert list to array for easier processing
+        User[] usersArray = new User[usersList.size()];
+        usersList.toArray(usersArray);
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(usersArray, HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getUsersWithinXMilesOfLocation(
+                50,
+                LONDON_LATITUDE,
+                LONDON_LONGITUDE);
+
+        assertNotNull(actualResponse);
+        assertNotEquals(2, actualResponse.size());
+
+
+    }
+
+    @Test
+    public void whenOneUsersWithin50MilesOfLocationAndOneOutsideThenGetUsersWithin50MilesOfLondonReturnsListWithOneUser() {
+        // Create sample user
+        User user1 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                51.6553959,
+                0.0572553);
+
+        User user2 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                34.003135,
+                -117.7228641);
+
+        // Add sample user to list
+        List<User> usersList = new ArrayList<>();
+        usersList.add(user1);
+        usersList.add(user2);
+
+        // Convert list to array for easier processing
+        User[] usersArray = new User[usersList.size()];
+        usersList.toArray(usersArray);
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(usersArray, HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getUsersWithinXMilesOfLocation(
+                50,
+                LONDON_LATITUDE,
+                LONDON_LONGITUDE);
+
+        assertNotNull(actualResponse);
+        assertNotEquals(1, actualResponse.size());
+
+
     }
 }
