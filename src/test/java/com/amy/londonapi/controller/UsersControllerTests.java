@@ -12,6 +12,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +30,12 @@ public class UsersControllerTests {
 
     @Test
     public void controllerReturns200WithEmptyListOfUsers(){
-        when(mockedUsersService.getAllUsers()).thenReturn(new ArrayList<>());
+        when(mockedUsersService.getUsersInCityOrAroundLocation(
+                anyString(),
+                anyDouble(),
+                anyDouble(),
+                anyDouble()
+                )).thenReturn(new ArrayList<>());
 
         ResponseEntity<List<User>> actualResponse = usersController.getUsersInOrAroundLondon();
 
@@ -53,7 +60,12 @@ public class UsersControllerTests {
         List<User> expectedUsersList = new ArrayList<>();
         expectedUsersList.add(user1);
 
-        when(mockedUsersService.getAllUsers()).thenReturn(expectedUsersList);
+        when(mockedUsersService.getUsersInCityOrAroundLocation(
+                anyString(),
+                anyDouble(),
+                anyDouble(),
+                anyDouble()
+        )).thenReturn(expectedUsersList);
 
         ResponseEntity<List<User>> actualResponse = usersController.getUsersInOrAroundLondon();
 
