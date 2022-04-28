@@ -331,13 +331,23 @@ public class UsersServiceTests {
         User[] londonUsersArray = new User[londonUserList.size()];
         londonUserList.toArray(londonUsersArray);
 
+        // Add sample user to list of users within location
+        List<User> withinLocationUserList = new ArrayList<>();
+        withinLocationUserList.add(londonUser);
+
+        // Convert list to array for easier processing
+        User[] withinLocationUserArray = new User[withinLocationUserList.size()];
+        withinLocationUserList.toArray(withinLocationUserArray);
+
         // Create mocked response from the Users API call
-        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(londonUsersArray, HttpStatus.OK);
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(withinLocationUserArray, HttpStatus.OK);
+        ResponseEntity<User[]> usersInCityResponse = new ResponseEntity<>(londonUsersArray, HttpStatus.OK);
 
         String url = "http://bpdts-test-app.herokuapp.com/";
 
         // Mock out the rest template call
         when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+        when(mockedRestTemplate.getForEntity(url + "city/London/users", User[].class)).thenReturn(usersInCityResponse);
 
         UsersService usersService = new UsersService(mockedRestTemplate, url);
 
@@ -364,7 +374,7 @@ public class UsersServiceTests {
                 51.6553959,
                 0.0572553);
 
-        // Add sample user to list
+        // Add sample user to list of London users
         List<User> londonUserList = new ArrayList<>();
         londonUserList.add(londonUser);
 
@@ -372,13 +382,23 @@ public class UsersServiceTests {
         User[] londonUsersArray = new User[londonUserList.size()];
         londonUserList.toArray(londonUsersArray);
 
+        // Add sample user to list of users within location
+        List<User> withinLocationUserList = new ArrayList<>();
+        withinLocationUserList.add(londonUser);
+
+        // Convert list to array for easier processing
+        User[] withinLocationUserArray = new User[withinLocationUserList.size()];
+        withinLocationUserList.toArray(withinLocationUserArray);
+
         // Create mocked response from the Users API call
-        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(londonUsersArray, HttpStatus.OK);
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(withinLocationUserArray, HttpStatus.OK);
+        ResponseEntity<User[]> usersInCityResponse = new ResponseEntity<>(londonUsersArray, HttpStatus.OK);
 
         String url = "http://bpdts-test-app.herokuapp.com/";
 
         // Mock out the rest template call
         when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+        when(mockedRestTemplate.getForEntity(url + "city/London/users", User[].class)).thenReturn(usersInCityResponse);
 
         UsersService usersService = new UsersService(mockedRestTemplate, url);
 
@@ -391,4 +411,65 @@ public class UsersServiceTests {
         assertNotNull(actualResponse);
         assertEquals(1, actualResponse.size());
     }
+
+    @Test
+    public void whenOneUserInLondonAndAnotherUserWithin50MilesOfLondonThenTwoUserReturned() {
+        // Create sample user
+        User londonUser = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                34.003135,
+                -117.7228641);
+
+        User userWithin50Miles = new User(
+                1,
+                "Bob",
+                "Bella",
+                "bb0@doggo.com",
+                "192.57.232.111",
+                51.6553959,
+                0.0572553);
+
+        // Add sample user to list of London users
+        List<User> londonUserList = new ArrayList<>();
+        londonUserList.add(londonUser);
+
+        // Convert list to array for easier processing
+        User[] londonUsersArray = new User[londonUserList.size()];
+        londonUserList.toArray(londonUsersArray);
+
+        // Add sample user to list of users within location
+        List<User> withinLocationUserList = new ArrayList<>();
+        withinLocationUserList.add(userWithin50Miles);
+
+        // Convert list to array for easier processing
+        User[] withinLocationUserArray = new User[withinLocationUserList.size()];
+        withinLocationUserList.toArray(withinLocationUserArray);
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(withinLocationUserArray, HttpStatus.OK);
+        ResponseEntity<User[]> usersInCityResponse = new ResponseEntity<>(londonUsersArray, HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
+        when(mockedRestTemplate.getForEntity(url + "city/London/users", User[].class)).thenReturn(usersInCityResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getUsersInCityOrAroundLocation(
+                "London",
+                50,
+                LONDON_LATITUDE,
+                LONDON_LONGITUDE);
+
+        assertNotNull(actualResponse);
+        assertEquals(2, actualResponse.size());
+    }
+
+
 }

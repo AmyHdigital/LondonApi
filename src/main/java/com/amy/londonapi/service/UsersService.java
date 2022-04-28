@@ -10,8 +10,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UsersService {
@@ -60,6 +62,16 @@ public class UsersService {
                         miles,
                         startLatitude,
                         startLongitude))
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getUsersInCityOrAroundLocation(String city,double miles, double startLatitude, double startLongitude){
+        List<User> listOfUsersInCity = getAllUsersFromCity(city);
+        List<User> listOfUsersAroundLocation = getUsersWithinXMilesOfLocation(miles,startLatitude,startLongitude);
+
+        return Stream.of(listOfUsersInCity,listOfUsersAroundLocation)
+                .flatMap(Collection::stream)
+                .distinct()
                 .collect(Collectors.toList());
     }
 }
