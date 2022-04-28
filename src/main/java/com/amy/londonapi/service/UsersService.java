@@ -19,7 +19,7 @@ public class UsersService {
     private final String backendUrl;
 
     @Autowired
-    public UsersService(RestTemplate restTemplate, @Value("backend_service_url") String backendUrl) {
+    public UsersService(RestTemplate restTemplate, @Value("${backend_service_url}") final String backendUrl) {
         this.restTemplate = restTemplate;
         this.backendUrl = backendUrl;
     }
