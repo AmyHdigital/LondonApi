@@ -56,4 +56,42 @@ public class UsersServiceTests {
         assertNotEquals(0, actualResponse.size());
 
     }
+
+    @Test
+    public void testUsersFromCityApiReturnsListOfUsers(){
+        mockedRestTemplate = mock(RestTemplate.class);
+
+        // Create sample user
+        User user1 = new User(
+                1,
+                "Maurise",
+                "Shieldon",
+                "mshieldon0@squidoo.com",
+                "192.57.232.111",
+                34.003135,
+                -117.7228641);
+
+        // Add sample user to list
+        List<User> expectedUsersList = new ArrayList<>();
+        expectedUsersList.add(user1);
+
+        // Convert list to array for easier processing
+        User[] expectedUsersArray = new User[expectedUsersList.size()];
+        expectedUsersList.toArray(expectedUsersArray);
+
+        // Create mocked response from the Users API call
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(expectedUsersArray,HttpStatus.OK);
+
+        String url = "http://bpdts-test-app.herokuapp.com/";
+
+        // Mock out the rest template call
+        when(mockedRestTemplate.getForEntity(url + "city/London/users", User[].class)).thenReturn(allUsersResponse);
+
+        UsersService usersService = new UsersService(mockedRestTemplate, url);
+
+        List<User> actualResponse = usersService.getAllUsersFromCity("London");
+
+        assertNotNull(actualResponse);
+        assertNotEquals(0, actualResponse.size());
+    }
 }
