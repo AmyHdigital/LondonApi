@@ -23,7 +23,7 @@ public class GeolocationTests {
         double userLatitude =  51.6553959;
         double userLongitude = 0.0572553;
 
-        boolean result = isUserWithinXMilesOfCoordinates(
+        boolean result = Geolocation.isUserWithinXMilesOfCoordinates(
             userLatitude,
                 userLongitude,
                 50,
@@ -39,7 +39,7 @@ public class GeolocationTests {
         double userLatitude =  34.003135;
         double userLongitude = -117.7228641;
 
-        boolean result = isUserWithinXMilesOfCoordinates(
+        boolean result = Geolocation.isUserWithinXMilesOfCoordinates(
                 userLatitude,
                 userLongitude,
                 50,
@@ -55,7 +55,7 @@ public class GeolocationTests {
         double userLatitude =  52.09427;
         double userLongitude = 0.420771;
 
-        boolean result = isUserWithinXMilesOfCoordinates(
+        boolean result = Geolocation.isUserWithinXMilesOfCoordinates(
                 userLatitude,
                 userLongitude,
                 50,
