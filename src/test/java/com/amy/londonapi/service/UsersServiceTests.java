@@ -10,8 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -127,7 +126,7 @@ public class UsersServiceTests {
                 LONDON_LONGITUDE);
 
         assertNotNull(actualResponse);
-        assertNotEquals(0, actualResponse.size());
+        assertEquals(0, actualResponse.size());
     }
 
     @Test
@@ -166,7 +165,7 @@ public class UsersServiceTests {
                 LONDON_LONGITUDE);
 
         assertNotNull(actualResponse);
-        assertNotEquals(1, actualResponse.size());
+        assertEquals(1, actualResponse.size());
 
     }
 
@@ -206,7 +205,7 @@ public class UsersServiceTests {
                 LONDON_LONGITUDE);
 
         assertNotNull(actualResponse);
-        assertNotEquals(1, actualResponse.size());
+        assertEquals(0, actualResponse.size());
 
 
     }
@@ -258,7 +257,7 @@ public class UsersServiceTests {
                 LONDON_LONGITUDE);
 
         assertNotNull(actualResponse);
-        assertNotEquals(2, actualResponse.size());
+        assertEquals(2, actualResponse.size());
 
 
     }
@@ -309,7 +308,7 @@ public class UsersServiceTests {
                 LONDON_LONGITUDE);
 
         assertNotNull(actualResponse);
-        assertNotEquals(1, actualResponse.size());
+        assertEquals(1, actualResponse.size());
 
 
     }

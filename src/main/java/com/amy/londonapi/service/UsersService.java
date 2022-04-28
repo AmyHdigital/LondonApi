@@ -1,6 +1,7 @@
 package com.amy.londonapi.service;
 
 import com.amy.londonapi.model.User;
+import com.amy.londonapi.utilities.Geolocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersService {
@@ -44,5 +46,20 @@ public class UsersService {
         users = Arrays.asList(allCityUsers.getBody());
 
         return users;
+    }
+
+
+    public List<User> getUsersWithinXMilesOfLocation (double miles, double startLatitude, double startLongitude){
+
+        List<User> listOfUsers = getAllUsers();
+
+        return listOfUsers.stream()
+                .filter(user -> Geolocation.isUserWithinXMilesOfCoordinates(
+                        user.getLatitude(),
+                        user.getLongitude(),
+                        miles,
+                        startLatitude,
+                        startLongitude))
+                .collect(Collectors.toList());
     }
 }
