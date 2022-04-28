@@ -1,16 +1,17 @@
 package com.amy.londonapi.service;
 
 import com.amy.londonapi.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -18,10 +19,13 @@ public class UsersServiceTests {
 
     private RestTemplate mockedRestTemplate;
 
-    @Test
-    public void testUsersApiReturnsListOfUsers(){
+    @BeforeEach
+    public void setup() {
         mockedRestTemplate = mock(RestTemplate.class);
+    }
 
+    @Test
+    public void testUsersApiReturnsListOfUsers() {
         // Create sample user
         User user1 = new User(
                 1,
@@ -41,12 +45,12 @@ public class UsersServiceTests {
         expectedUsersList.toArray(expectedUsersArray);
 
         // Create mocked response from the Users API call
-        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(expectedUsersArray,HttpStatus.OK);
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(expectedUsersArray, HttpStatus.OK);
 
         String url = "http://bpdts-test-app.herokuapp.com/";
 
         // Mock out the rest template call
-        when(mockedRestTemplate.getForEntity(url + "users",User[].class)).thenReturn(allUsersResponse);
+        when(mockedRestTemplate.getForEntity(url + "users", User[].class)).thenReturn(allUsersResponse);
 
         UsersService usersService = new UsersService(mockedRestTemplate, url);
 
@@ -54,13 +58,10 @@ public class UsersServiceTests {
 
         assertNotNull(actualResponse);
         assertNotEquals(0, actualResponse.size());
-
     }
 
     @Test
-    public void testUsersFromCityApiReturnsListOfUsers(){
-        mockedRestTemplate = mock(RestTemplate.class);
-
+    public void testUsersFromCityApiReturnsListOfUsers() {
         // Create sample user
         User user1 = new User(
                 1,
@@ -80,7 +81,7 @@ public class UsersServiceTests {
         expectedUsersList.toArray(expectedUsersArray);
 
         // Create mocked response from the Users API call
-        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(expectedUsersArray,HttpStatus.OK);
+        ResponseEntity<User[]> allUsersResponse = new ResponseEntity<>(expectedUsersArray, HttpStatus.OK);
 
         String url = "http://bpdts-test-app.herokuapp.com/";
 
